@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Register</h1>
+<form method="POST">
+    {% csrf_token %}
+
+    <label for="username">Username</label>
+    {{ form.username }}
+
+    <label for="email">Email</label>
+    {{ form.email }}
+
+    <label for="password1">Password</label>
+    {{ form.password1 }}
+
+    <label for="password2">Repeat Password</label>
+    {{ form.password2 }}
+
+    <input class="btn btnPrimary" type="submit" value="Register Account">
+</form>
+
+{{form.errors}}
+
+{% endblock %}
