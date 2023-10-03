@@ -774,3 +774,7 @@ input[type=text], input[type=email], select, textarea {
   margin-bottom: 16px;
   resize: vertical
 }
+
+.bg-nav {
+  background-color: #434742;
+}

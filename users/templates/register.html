@@ -1,25 +1,40 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}Register{% endblock %}
 
 {% block content %}
+<div class="p-5">
+    <div class="container card p-5">
+        <h1 class="text-center">Register</h1>
+        <form method="POST">
+            {% csrf_token %}
 
-<h1>Register</h1>
-<form method="POST">
-    {% csrf_token %}
+            <div class="mb-3">
+                <label for="username">Username</label>
+                {{ form.username }}
+            </div>
 
-    <label for="username">Username</label>
-    {{ form.username }}
+            <div class="mb-3">
+                <label for="email">Email</label>
+                {{ form.email }}
+            </div>
 
-    <label for="email">Email</label>
-    {{ form.email }}
+            <div class="mb-3">
+                <label for="password1">Password</label>
+                {{ form.password1 }}
+            </div>
 
-    <label for="password1">Password</label>
-    {{ form.password1 }}
+            <div class="mb-3">
+                <label for="password2">Repeat Password</label>
+                {{ form.password2 }}
+            </div class='mb-3'>
 
-    <label for="password2">Repeat Password</label>
-    {{ form.password2 }}
-
-    <input class="btn btnPrimary" type="submit" value="Register Account">
-</form>
+            <div class="text-center">
+                <input class="btn btn-primary text-center" type="submit" value="Register Account">
+            </div>
+        </form>
+    </div>
+</div>
 
 {{form.errors}}
 

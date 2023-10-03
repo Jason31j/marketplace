@@ -22,9 +22,9 @@ def registerPage(request):
 				return redirect('users:login')
 			else:
 				print("fallo")
-
-		context = {'form':form}
-		return render(request, 'register.html', context)
+		else:
+			context = {'form':form}
+			return render(request, 'register.html', context)
 
 def loginPage(request):
 	if request.user.is_authenticated:
