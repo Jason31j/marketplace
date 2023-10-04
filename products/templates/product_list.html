@@ -3,16 +3,31 @@
 {% block title %}Products List{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Products</h1>
-    <div>
+<div class="container mx-auto">
+    <h1 class="d-block">Products</h1>
+    <div class="p-3 ">
         {% for product in products %}
-            <h3>
-                <a href="{% url 'products:product_detail' slug=product.slug %}">
-                    {{ product.name }}
-                </a>
-            </h3>
+
+        <a href="{% url 'products:product_detail' slug=product.slug %}">
+
+            <div class="card mb-3 mx-auto" style="max-width: 900px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" class="image-fluid rounded-start" style="min-height: 300px; max-height: 300px;">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
         {% endfor %}
+
     </div>
 </div>
 {% endblock %}

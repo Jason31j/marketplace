@@ -1,21 +1,13 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
-from .models import Product
+
+from .models import Product, Category
 from .forms import categoryForm, productForm
 
 
-# Create your views here.
-class productListPage(generic.ListView):
-    template_name = 'product_list.html'
-    context_object_name = 'products'
-    queryset = Product.objects.all()
-
-class productDetailPage(generic.DetailView):
-    template_name = 'product_detail.html'
-    context_object_name = 'product'
-    queryset = Product.objects.all()
+#product views
 
 #coming soon
 def productSearchPage(request):
@@ -27,11 +19,23 @@ def productSearchPage(request):
         return render(request, template_name, {context_object_name: products})
     else:
         return redirect('/products/')
+class productListPage(generic.ListView):
+    template_name = 'product_list.html'
+    context_object_name = 'products'
+    queryset = Product.objects.all()
+
+class productDetailPage(generic.DetailView):
+    template_name = 'product_detail.html'
+    context_object_name = 'product'
+    queryset = Product.objects.all()
+
 class productCreatePage(generic.CreateView):
     template_name = 'product_create.html'
     model = Product
     form_class = productForm
-    success_url = '/products/'
+
+    def get_success_url(self):
+        return reverse('products:product_list')
 
     def form_valid(self, form):
         messages.success(self.request, 'Product created successfully.')
@@ -46,6 +50,9 @@ class productUpdatePage(generic.UpdateView):
     model = Product
     fields = ['name', 'price', 'description', 'image']
 
+    def get_success_url(self):
+        return reverse('products:product_list')
+    
     def form_valid(self, form):
         messages.success(self.request, 'Product updated successfully.')
         return super().form_valid(form)
@@ -55,10 +62,67 @@ class productUpdatePage(generic.UpdateView):
         return super().form_invalid(form)
 
 class productDeletePage(generic.DeleteView):
-    template_name = 'product_delete.html'
+    template_name = 'delete.html'
     model = Product
-    success_url = '/products/'
 
+    def get_success_url(self):
+        return reverse('products:product_list')
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Product deleted successfully.')
+        return super().form_valid(form)
+    
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, 'Product deleted successfully.')
+        return super().delete(request, *args, **kwargs)
+
+#category views
+class categoryListPage(generic.ListView):
+    template_name = 'category_list.html'
+    context_object_name = 'categories'
+    queryset = Category.objects.all()
+
+class categoryDetailPage(generic.DetailView):
+    template_name = 'category_detail.html'
+    context_object_name = 'category'
+    queryset = Category.objects.all()
+
+class categoryCreatePage(generic.CreateView):
+    template_name = 'category_create.html'
+    model = Category
+    form_class = categoryForm
+
+    def get_success_url(self):
+        return reverse('products:category_list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Category created successfully.')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Category creation failed.')
+        return super().form_invalid(form)
+
+class categoryUpdatePage(generic.UpdateView):
+    template_name = 'category_update.html'
+    model = Category
+    fields = ['name', 'description']
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Category updated successfully.')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Category update failed.')
+        return super().form_invalid(form)
+
+class categoryDeletePage(generic.DeleteView):
+    template_name = 'delete.html'
+    model = Category
+
+    def get_success_url(self):
+        return reverse('products:category_list')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, 'Category deleted successfully.')
         return super().delete(request, *args, **kwargs)
