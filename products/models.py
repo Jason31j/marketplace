@@ -1,4 +1,6 @@
 from django.utils.text import slugify
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.db import models
 from stores.models import Store
 
@@ -15,6 +17,13 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+#signal to edit category slug automatically
+@receiver(pre_save, sender=Category)
+def pre_save_slug(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = slugify(instance.name)
+
 
 class Product(models.Model):
     name = models.CharField(max_length=120)
@@ -33,3 +42,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+#signal to edit product slug automatically
+@receiver(pre_save, sender=Product)
+def pre_save_slug(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = slugify(instance.name)

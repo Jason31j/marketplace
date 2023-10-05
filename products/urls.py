@@ -23,7 +23,7 @@ urlpatterns = [
     #category urls
     path('category/', views.categoryListPage.as_view(), name='category_list'),
     path('category/create/', views.categoryCreatePage.as_view(), name='category_create'),
-    path('category/update/<slug:slug>/', views.categoryCreatePage.as_view(), name='category_update'),
+    path('category/update/<slug:slug>/', views.categoryUpdatePage.as_view(), name='category_update'),
     path('category/delete/<slug:slug>/', views.categoryDeletePage.as_view(), name='category_delete'),
     path('category/<slug:slug>/', views.categoryDetailPage.as_view(), name='category_detail'),
     #product urls

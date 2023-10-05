@@ -62,7 +62,7 @@ a, .btn {
   font-size: 20px;
   font-weight: var(--medium);
   padding: 8px 20px;
-  border-radius: 2px;
+  border-radius: 8px;
 }
 .btnPrimary {
   background-color: var(--primaryColor);

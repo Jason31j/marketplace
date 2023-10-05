@@ -4,15 +4,26 @@
 
 {% block content %}
 <div class="container">
-    <h1>Categories</h1>
-    <div>
+    <h1 class="text-center">Categories</h1>
+    <div class="row">
         {% for category in categories %}
-            <h3>
-                <a href="{% url 'products:category_detail' slug=category.slug %}">
-                    {{ category.name }}
-                </a>
-            </h3>
+        <div class="col-md-6 p-1">
+            <a href="{% url 'products:category_detail' slug=category.slug %}">
+                <div class="card p-3 m-2">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{ category.name }}</h5>
+                        <p class="card-text">{{ category.description }}</p>
+                        
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'products:category_update' slug=category.slug %}" class="btn btn-primary text-center">Edit</a>
+                        <a href="{% url 'products:category_delete' slug=category.slug %}" class="btn btn-danger text-center">Delete</a>
+                    </div>
+                </div>
+            </a>
+        </div>
         {% endfor %}
     </div>
 </div>
+
 {% endblock %}

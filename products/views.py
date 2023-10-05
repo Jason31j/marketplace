@@ -106,7 +106,10 @@ class categoryCreatePage(generic.CreateView):
 class categoryUpdatePage(generic.UpdateView):
     template_name = 'category_update.html'
     model = Category
-    fields = ['name', 'description']
+    form_class = categoryForm
+
+    def get_success_url(self):
+        return reverse('products:category_list')
 
     def form_valid(self, form):
         messages.success(self.request, 'Category updated successfully.')
