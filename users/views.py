@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.views import generic
 
 from .forms import CreateUserForm, LoginForm
 
@@ -49,3 +50,7 @@ def loginPage(request):
 def logoutUser(request):
 	logout(request)
 	return redirect('users:login')
+
+def profile(request):
+	profile = request.user
+	return render(request, 'profile.html', {'profile': profile})

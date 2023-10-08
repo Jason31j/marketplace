@@ -22,7 +22,13 @@ def productSearchPage(request):
 class productListPage(generic.ListView):
     template_name = 'product_list.html'
     context_object_name = 'products'
-    queryset = Product.objects.all()
+
+    def get_queryset(self):
+        if self.kwargs.get('category'):
+            return Product.objects.filter(category__slug=self.kwargs.get('category'))
+        else:
+            return Product.objects.all()
+
 
 class productDetailPage(generic.DetailView):
     template_name = 'product_detail.html'
@@ -62,8 +68,9 @@ class productUpdatePage(generic.UpdateView):
         return super().form_invalid(form)
 
 class productDeletePage(generic.DeleteView):
-    template_name = 'delete.html'
+    template_name = 'product_delete.html'
     model = Product
+    context_object_name = 'product'
 
     def get_success_url(self):
         return reverse('products:product_list')
@@ -120,8 +127,9 @@ class categoryUpdatePage(generic.UpdateView):
         return super().form_invalid(form)
 
 class categoryDeletePage(generic.DeleteView):
-    template_name = 'delete.html'
+    template_name = 'category_delete.html'
     model = Category
+    context_object_name = 'category'
 
     def get_success_url(self):
         return reverse('products:category_list')

@@ -3,12 +3,39 @@
 {% block title %}Product Detail{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>{{ product.name }}</h1>
-        <p>{{ product.description }}</p>
-        <p>{{ product.price }}</p>
-        <p>{{ product.stock }}</p>
-        <p>{{ product.category.name }}</p>
-        
+<div class="container">
+    <div class="card py-5">
+        <div class="row">
+            <div class="col-md-5 p-5">
+                <img src="{{ product.image.url }}">
+            </div>
+
+            <div class="col-md-5 py-5">
+                <div class="card-body">
+                    <h2 class="card-title text-center">{{ product.name }}</h2>
+                    <p class="card-text">{{ product.description }}</p>
+                    <p class="card-text">Category: {{ product.category.name }}</p>
+                    <h4 class="card-tittle">{{ product.price }}$</h4>
+                    <p class="card-text">{{ product.stock }} available</p>
+                    <div class="text-center">
+                        <a href="#" class="btn btn-primary p-2 m-2">Buy now</a>
+                        <a href="#" class="btn btn-secondary p-2 m-2">Add to my wishlist</a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
     </div>
+</div>
 {% endblock %}
+
+<!-- <div class="container">
+    <h1>{{ product.name }}</h1>
+    <p>{{ product.description }}</p>
+    <p>{{ product.price }}</p>
+    <p>{{ product.stock }}</p>
+    <p>{{ product.category.name }}</p>
+
+</div>
+-->
