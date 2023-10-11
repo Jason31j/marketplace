@@ -22,8 +22,8 @@ app_name = 'stores'
 
 urlpatterns = [
     path('', views.storeListPage.as_view(), name='store_list'),
-    path('<slug:slug>/', views.storeDetailPage.as_view(), name='store_detail'),
     path('create/', views.storeCreatePage.as_view(), name='store_create'),
+    path('<slug:slug>/', views.storeDetailPage.as_view(), name='store_detail'),
     path('<slug:slug>/update/', views.storeUpdatePage.as_view(), name='store_update'),
     path('search/', views.storeSearchPage.as_view(), name='store_search'),
     path('<slug:slug>/delete/', views.storeDeletePage.as_view(), name='store_delete'),

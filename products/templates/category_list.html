@@ -5,9 +5,22 @@
 {% block content %}
 <div class="container">
     <h1 class="text-center">Categories</h1>
+    <!-- create new category section -->
+    <div class="row">
+        <div class="col-md-12 p-1 mx-auto">
+            <a href="{% url 'products:category_create' %}">
+                <div class="card p-5 m-2 bg-primary">
+                    <h4 class="text-center text-white">Create a category</h4>
+                </div>
+            </a>
+        </div>
+        
+    </div>
+    <!-- create new category section -->
+
     <div class="row">
         {% for category in categories %}
-        <div class="col-md-6 p-1">
+        <div class="col-md-6 p-1 mx-auto">
             <a href="{% url 'products:product_list' category=category.slug %}">
                 <div class="card p-3 m-2">
                     <div class="card-body">
@@ -23,6 +36,7 @@
             </a>
         </div>
         {% endfor %}
+
     </div>
 </div>
 

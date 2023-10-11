@@ -1,10 +1,10 @@
 # Create your views here.
-from django.shortcuts import render
-from django.shortcuts import redirect
 from django.contrib import messages
 from django.views import generic
-from .models import Store
+from django.urls import reverse
 
+from .models import Store
+from .forms import StoreForm
 class storeListPage(generic.ListView):
     template_name = 'store_list.html'
     context_object_name = 'stores'
@@ -18,8 +18,7 @@ class storeDetailPage(generic.DetailView):
 class storeCreatePage(generic.CreateView):
     template_name = 'store_create.html'
     model = Store
-    fields = ['name', 'address', 'phone', 'email', 'description', 'image']
-    success_url = '/store/'
+    form_class = StoreForm
 
     def form_valid(self, form):
         messages.success(self.request, 'Store created successfully.')
@@ -28,6 +27,9 @@ class storeCreatePage(generic.CreateView):
     def form_invalid(self, form):
         messages.error(self.request, 'Store creation failed.')
         return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse('stores:store_list')
 
 class storeUpdatePage(generic.UpdateView):
     template_name = 'store_update.html'

@@ -4,8 +4,19 @@
 
 {% block content %}
 <div class="container mx-auto">
-    <h1 class="d-block">Products</h1>
+    <h1 class="d-block text-center">Products</h1>
     <div class="p-3 ">
+
+        <!-- create new product section -->
+        <a href="{% url 'products:product_create' %}">
+            <div class="card mb-3 mx-auto p-5 bg-primary" style="max-width: 900px;">
+                <div class="row g-0">
+                    <h4 class="text-center text-white">Create a new product</h4>
+                </div>
+            </div>
+        </a>
+        <!-- create new product section -->
+        
         {% for product in products %}
 
         <a href="{% url 'products:product_detail' slug=product.slug category=product.category %}">
