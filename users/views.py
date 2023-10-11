@@ -22,7 +22,8 @@ def registerPage(request):
 
 				return redirect('users:login')
 			else:
-				print("fallo")
+				messages.error(request, 'Error creating account')
+				return render(request, 'register.html', {'form':form})
 		else:
 			context = {'form':form}
 			return render(request, 'register.html', context)

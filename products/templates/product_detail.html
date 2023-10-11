@@ -23,9 +23,11 @@
                     </div>
                 </div>
             </div>
-
-
+            
         </div>
+        <a href="{% url 'reviews:review_list' id_product=product.id %}" class="btn btn-primary mx-5 my-1">See reviews</a>
+        <a href="{% url 'reviews:review_create' id_product=product.id %}" class="btn btn-primary mx-5 my-1">Leave a review</a>
+
     </div>
 </div>
 {% endblock %}

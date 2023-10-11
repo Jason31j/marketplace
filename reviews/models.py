@@ -29,12 +29,6 @@ class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='reviews/', blank=True, null=True)
     rating = models.IntegerField(validators=[validate_rating])
-    slug = models.SlugField(max_length=50, unique=True, blank=True, null=True)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.slug = slugify(self.id)
-        super(Review, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.tittle

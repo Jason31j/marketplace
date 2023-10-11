@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Review List{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="text-center">Reviews</h1>
+    {% for review in reviews %}
+    <div class="col-md-12">
+        <div class="card mb-4 box-shadow">
+            <div class="card-body">
+                <h5 class="card-title text-center">{{ review.tittle }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ review.author }} - {{ review.date }}</h6>
+
+                <p class="card-text">{{ review.description }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                        {{ review.rating }}
+                        <img src="{% static 'images/star.svg' %}" />
+                    </small>
+                </div>
+                <div class="d-flex justify-content-around">
+                    <a href="{% url 'reviews:review_update' id_review=review.id %}" class="btn btn-sm btn-primary"> <img src="{% static 'images/edit.svg' %}"/> Edit</a>
+                    <a href="{% url 'reviews:review_delete' id_review=review.id %}" class="btn btn-sm btn-danger"> <img src="{% static 'images/delete.svg' %}"/> Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
