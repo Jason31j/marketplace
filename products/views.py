@@ -7,10 +7,10 @@ from .models import Product, Category
 from .forms import categoryForm, productForm
 
 
-#product views
+# --------------------product views------------------------
 
-#coming soon
 def productSearchPage(request):
+    """Comming soon"""
     template_name = 'product_search.html'
     context_object_name = 'products'
     if request.method == 'POST':
@@ -20,7 +20,7 @@ def productSearchPage(request):
     else:
         return redirect('/products/')
 class productListPage(generic.ListView):
-    template_name = 'product_list.html'
+    template_name = 'product/product_list.html'
     context_object_name = 'products'
 
     def get_queryset(self):
@@ -29,14 +29,13 @@ class productListPage(generic.ListView):
         else:
             return Product.objects.all()
 
-
 class productDetailPage(generic.DetailView):
-    template_name = 'product_detail.html'
+    template_name = 'product/product_detail.html'
     context_object_name = 'product'
     queryset = Product.objects.all()
 
 class productCreatePage(generic.CreateView):
-    template_name = 'product_create.html'
+    template_name = 'product/product_create.html'
     model = Product
     form_class = productForm
 
@@ -52,7 +51,7 @@ class productCreatePage(generic.CreateView):
         return super().form_invalid(form)
 
 class productUpdatePage(generic.UpdateView):
-    template_name = 'product_update.html'
+    template_name = 'product/product_update.html'
     model = Product
     fields = ['name', 'price', 'description', 'image']
 
@@ -68,7 +67,7 @@ class productUpdatePage(generic.UpdateView):
         return super().form_invalid(form)
 
 class productDeletePage(generic.DeleteView):
-    template_name = 'product_delete.html'
+    template_name = 'product/product_delete.html'
     model = Product
     context_object_name = 'product'
 
@@ -83,19 +82,19 @@ class productDeletePage(generic.DeleteView):
         messages.success(self.request, 'Product deleted successfully.')
         return super().delete(request, *args, **kwargs)
 
-#category views
+# --------------------category views----------------------
 class categoryListPage(generic.ListView):
-    template_name = 'category_list.html'
+    template_name = 'category/category_list.html'
     context_object_name = 'categories'
     queryset = Category.objects.all()
 
 class categoryDetailPage(generic.DetailView):
-    template_name = 'category_detail.html'
+    template_name = 'category/category_detail.html'
     context_object_name = 'category'
     queryset = Category.objects.all()
 
 class categoryCreatePage(generic.CreateView):
-    template_name = 'category_create.html'
+    template_name = 'category/category_create.html'
     model = Category
     form_class = categoryForm
 
@@ -111,7 +110,7 @@ class categoryCreatePage(generic.CreateView):
         return super().form_invalid(form)
 
 class categoryUpdatePage(generic.UpdateView):
-    template_name = 'category_update.html'
+    template_name = 'category/category_update.html'
     model = Category
     form_class = categoryForm
 
@@ -127,7 +126,7 @@ class categoryUpdatePage(generic.UpdateView):
         return super().form_invalid(form)
 
 class categoryDeletePage(generic.DeleteView):
-    template_name = 'category_delete.html'
+    template_name = 'category/category_delete.html'
     model = Category
     context_object_name = 'category'
 
