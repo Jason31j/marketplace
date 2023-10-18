@@ -1,5 +1,8 @@
 from django.views import generic
 from django.urls import reverse
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import IntegrityError
 
 from .models import Review
 from .forms import ReviewForm
@@ -11,22 +14,30 @@ class ReviewListView(generic.ListView):
     template_name = 'review_list.html'
     context_object_name = 'reviews'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
+
     def get_queryset(self):
         return Review.objects.filter(product=self.kwargs['id_product'])
 
-class ReviewCreateView(generic.CreateView):
+class ReviewCreateView(LoginRequiredMixin ,generic.CreateView):
     model = Review
     template_name = 'review_create.html'
     form_class = ReviewForm
 
     def form_valid(self, form):
-        form.instance.product_id = self.kwargs['id_product']
-        form.instance.author_id = self.request.user.id
-        return super().form_valid(form)
+        try:
+            form.instance.product_id = self.kwargs['id_product']
+            form.instance.author_id = self.request.user.id
+            return super().form_valid(form)
+        except IntegrityError:
+            messages.error(self.request, 'You have already reviewed this product')
+            return super().form_invalid(form)
 
-    #write a funtion that send a message if an integrity error is raised
+
     def form_invalid(self, form):
-        
         return super().form_invalid(form)
 
     def get_success_url(self):

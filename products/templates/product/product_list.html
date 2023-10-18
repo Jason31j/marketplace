@@ -30,9 +30,14 @@
                     <div class="col-md-8">
                         <div class="card-body">
                             <h5 class="card-title text-center">{{ product.name }}</h5>
-                            <p class="card-text">{{ product.description }}</p>
+                            <p class="card-text">{{ product.description }}</p>                            
                         </div>
                     </div>
+                </div>
+                
+                <div class="m-3 text-center">
+                    <a class="btn btn-primary mx-2" href="{% url 'products:product_update' slug=product.slug %}">Edit</a>
+                    <a class="btn btn-danger mx-2" href="{% url 'products:product_delete' slug=product.slug %}">Delete</a>
                 </div>
             </div>
         </a>

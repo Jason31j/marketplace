@@ -30,7 +30,7 @@ class Product(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     stock = models.IntegerField(blank=True, null=True)
     description = models.TextField()
-    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     price = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     slug = models.SlugField(max_length=120, blank=True, null=True)

@@ -7,7 +7,9 @@
     <div class="card py-5">
         <div class="row">
             <div class="col-md-5 p-5">
+                {% if product.image %}
                 <img src="{{ product.image.url }}">
+                {% endif %}
             </div>
 
             <div class="col-md-5 py-5">
@@ -31,13 +33,3 @@
     </div>
 </div>
 {% endblock %}
-
-<!-- <div class="container">
-    <h1>{{ product.name }}</h1>
-    <p>{{ product.description }}</p>
-    <p>{{ product.price }}</p>
-    <p>{{ product.stock }}</p>
-    <p>{{ product.category.name }}</p>
-
-</div>
--->

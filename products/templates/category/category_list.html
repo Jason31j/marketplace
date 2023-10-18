@@ -6,6 +6,7 @@
 <div class="container">
     <h1 class="text-center">Categories</h1>
     <!-- create new category section -->
+    {% if user.is_superuser %}
     <div class="row">
         <div class="col-md-12 p-1 mx-auto">
             <a href="{% url 'products:category_create' %}">
@@ -16,6 +17,7 @@
         </div>
         
     </div>
+    {% endif %}
     <!-- create new category section -->
 
     <div class="row">
@@ -28,10 +30,12 @@
                         <p class="card-text">{{ category.description }}</p>
                         
                     </div>
+                    {% if user.is_superuser %}
                     <div class="d-grid gap-2">
                         <a href="{% url 'products:category_update' slug=category.slug %}" class="btn btn-primary text-center">Edit</a>
                         <a href="{% url 'products:category_delete' slug=category.slug %}" class="btn btn-danger text-center">Delete</a>
                     </div>
+                    {% endif %}
                 </div>
             </a>
         </div>

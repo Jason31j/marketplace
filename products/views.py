@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.utils.text import slugify
 
 from .models import Product, Category
 from .forms import categoryForm, productForm
@@ -39,9 +41,6 @@ class productCreatePage(generic.CreateView):
     model = Product
     form_class = productForm
 
-    def get_success_url(self):
-        return reverse('products:product_list')
-
     def form_valid(self, form):
         messages.success(self.request, 'Product created successfully.')
         return super().form_valid(form)
@@ -50,13 +49,16 @@ class productCreatePage(generic.CreateView):
         messages.error(self.request, 'Product creation failed.')
         return super().form_invalid(form)
 
+    def get_success_url(self):
+        return reverse('products:product_list', kwargs={'category': self.object.category.slug})
+
 class productUpdatePage(generic.UpdateView):
     template_name = 'product/product_update.html'
     model = Product
-    fields = ['name', 'price', 'description', 'image']
+    form_class = productForm
 
     def get_success_url(self):
-        return reverse('products:product_list')
+        return reverse('products:product_list', kwargs={'category': self.object.category.slug})
     
     def form_valid(self, form):
         messages.success(self.request, 'Product updated successfully.')
@@ -71,9 +73,6 @@ class productDeletePage(generic.DeleteView):
     model = Product
     context_object_name = 'product'
 
-    def get_success_url(self):
-        return reverse('products:product_list')
-    
     def form_valid(self, form):
         messages.success(self.request, 'Product deleted successfully.')
         return super().form_valid(form)
@@ -82,12 +81,22 @@ class productDeletePage(generic.DeleteView):
         messages.success(self.request, 'Product deleted successfully.')
         return super().delete(request, *args, **kwargs)
 
+    def get_success_url(self):
+        return reverse('products:product_list', kwargs={'category': self.object.category.slug})
+
 # --------------------category views----------------------
 class categoryListPage(generic.ListView):
     template_name = 'category/category_list.html'
     context_object_name = 'categories'
     queryset = Category.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        print(context['user'])
+        return context
+
+#not used by now
 class categoryDetailPage(generic.DetailView):
     template_name = 'category/category_detail.html'
     context_object_name = 'category'
@@ -98,9 +107,6 @@ class categoryCreatePage(generic.CreateView):
     model = Category
     form_class = categoryForm
 
-    def get_success_url(self):
-        return reverse('products:category_list')
-
     def form_valid(self, form):
         messages.success(self.request, 'Category created successfully.')
         return super().form_valid(form)
@@ -109,13 +115,13 @@ class categoryCreatePage(generic.CreateView):
         messages.error(self.request, 'Category creation failed.')
         return super().form_invalid(form)
 
+    def get_success_url(self):
+        return reverse('products:category_list')
+
 class categoryUpdatePage(generic.UpdateView):
     template_name = 'category/category_update.html'
     model = Category
     form_class = categoryForm
-
-    def get_success_url(self):
-        return reverse('products:category_list')
 
     def form_valid(self, form):
         messages.success(self.request, 'Category updated successfully.')
@@ -124,6 +130,9 @@ class categoryUpdatePage(generic.UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, 'Category update failed.')
         return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse('products:category_list')
 
 class categoryDeletePage(generic.DeleteView):
     template_name = 'category/category_delete.html'
