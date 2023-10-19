@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Product Detail{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card py-5">
+        <div class="row">
+            <div class="col-md-5 p-5">
+                {% if product.image %}
+                <img src="{{ product.image.url }}">
+                {% endif %}
+            </div>
+
+            <div class="col-md-5 py-5">
+                <div class="card-body">
+                    <h2 class="card-title text-center">{{ product.name }}</h2>
+                    <p class="card-text">{{ product.description }}</p>
+                    <p class="card-text">Category: {{ product.category.name }}</p>
+                    <h4 class="card-tittle">{{ product.price }}$</h4>
+                    <p class="card-text">{{ product.stock }} available</p>
+                    <div class="text-center">
+                        <a href="#" class="btn btn-primary p-2 m-2">Buy now</a>
+                        <a href="#" class="btn btn-secondary p-2 m-2">Add to my wishlist</a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <a href="{% url 'reviews:review_list' id_product=product.id %}" class="btn btn-primary mx-5 my-1">See reviews</a>
+        <a href="{% url 'reviews:review_create' id_product=product.id %}" class="btn btn-primary mx-5 my-1">Leave a review</a>
+
+    </div>
+</div>
+{% endblock %}

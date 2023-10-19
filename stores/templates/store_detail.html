@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Store Detail{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ store.name }}</h1>
+        <p>{{ store.user.username }}</p>
+        <p>{{ store.description }}</p>
+        <p>{{ store.rating }}</p>
+    </div>
+{% endblock %}

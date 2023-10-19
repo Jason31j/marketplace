@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Products List{% endblock %}
+
+{% block content %}
+<div class="container mx-auto">
+    <h1 class="d-block text-center">Products</h1>
+    <div class="p-3 ">
+
+        <!-- create new product section -->
+        <a href="{% url 'products:product_create' %}">
+            <div class="card mb-3 mx-auto p-5 bg-primary" style="max-width: 900px;">
+                <div class="row g-0">
+                    <h4 class="text-center text-white">Create a new product</h4>
+                </div>
+            </div>
+        </a>
+        <!-- create new product section -->
+        
+        {% for product in products %}
+
+        <a href="{% url 'products:product_detail' slug=product.slug category=product.category %}">
+            <div class="card mb-3 mx-auto" style="max-width: 900px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" class="image-fluid rounded-start" style="min-height: 300px; max-height: 300px;">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description }}</p>                            
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="m-3 text-center">
+                    <a class="btn btn-primary mx-2" href="{% url 'products:product_update' slug=product.slug %}">Edit</a>
+                    <a class="btn btn-danger mx-2" href="{% url 'products:product_delete' slug=product.slug %}">Delete</a>
+                </div>
+            </div>
+        </a>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

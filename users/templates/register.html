@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="p-5">
+    <div class="container card p-5">
+        <h1 class="text-center">Register</h1>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="username">Username</label>
+                {{ form.username }}
+            </div>
+
+            <div class="mb-3">
+                <label for="email">Email</label>
+                {{ form.email }}
+            </div>
+
+            <div class="mb-3">
+                <label for="password1">Password</label>
+                {{ form.password1 }}
+            </div>
+
+            <div class="mb-3">
+                <label for="password2">Repeat Password</label>
+                {{ form.password2 }}
+            </div class='mb-3'>
+
+            <div class="text-center m-5">
+                <input class="btn btn-primary text-center" type="submit" value="Register Account">
+            </div>
+        </form>
+        <h5 class="text-center mt-5">Already have an account? <a class="bold btn-link" href="{% url 'users:login' %}">Login</a></h5>
+    </div>
+</div>
+
+{{form.errors}}
+
+{% endblock %}

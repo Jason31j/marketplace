@@ -62,7 +62,7 @@ a, .btn {
   font-size: 20px;
   font-weight: var(--medium);
   padding: 8px 20px;
-  border-radius: 2px;
+  border-radius: 8px;
 }
 .btnPrimary {
   background-color: var(--primaryColor);
@@ -773,4 +773,8 @@ input[type=text], input[type=email], select, textarea {
   margin-top: 6px;
   margin-bottom: 16px;
   resize: vertical
+}
+
+.bg-nav {
+  background-color: #434742;
 }

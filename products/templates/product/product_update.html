@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Update Product{% endblock %}
+
+{% block content %}
+<div class="container card p-5">
+    <h1>Update Product</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="m-3">
+            <label for="name">Name:</label>
+            {{ form.name }}
+        </div>
+
+        <div class="m-3">
+            <label for="store">Store:</label>
+            {{ form.store }}
+        </div>
+
+        <div class="m-3">
+            <label for="stock">Stock:</label>
+            {{ form.stock }}
+        </div>
+
+        <div class="m-3">
+            <label for="description">Description:</label>
+            {{ form.description }}
+        </div>
+
+        <div class="m-3">
+            <label for="category">Category:</label>
+            {{ form.category }}
+        </div>
+
+        <div class="m-3">
+            <label for="price">Price:</label>
+            {{ form.price }}
+        </div>
+
+        <div class="m-3">
+            <label for="image">Image:</label>
+            {{ form.image }}
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

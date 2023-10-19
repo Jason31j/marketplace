@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Create Category{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Category Name</label>
+                    {{ form.name }}
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Category Description</label>
+                    {{ form.description }}
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+            {{ form.errors }}
+        </div>
+    </div>
+</div>
+{% endblock %}
