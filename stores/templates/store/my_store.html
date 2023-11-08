@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Stores List{% endblock %}
+
+{% block content %}
+
+{% if store %}
+{% for st in store %}
+<div class="container">
+    <div class="col-md-8 p-1 mx-auto">
+        <div class="card m-2 p-3 text-center">
+            {% if st.image%}
+            <img class="card-img-top mx-auto" src="{{ st.image.url }}" alt="Card image cap" style="max-width: 18rem;">
+            {% else %}
+            <img class="card-img-top mx-auto" src="{% static 'images/store_placeholder.png' %}" alt="Card image cap"
+                style="max-width: 18rem;">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-tittle text-center">{{ st.name }}</h5>
+                <p class="card-text">{{ st.description }}</p>
+                <p class="text-center">{{ st.rating }} <img src="{% static 'images/star.svg' %}" alt=""></p>
+            </div>
+
+            <div class="text-center p-2">
+                <a href="{% url 'stores:store_update' slug=st.slug %}" class="btn btn-primary mx-2">Edit</a>
+                <a href="{% url 'stores:store_delete' slug=st.slug %}" class="btn btn-danger mx-2">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="container py-5">
+    <h2 class="text-center">You did not create a store yet, wanna create one?</h1>
+    <div class="row">
+        <div class="col-md-12 p-1 mx-auto">
+            <a href="{% url 'stores:store_create' %}">
+                <div class="card p-5 m-2 bg-primary">
+                    <h4 class="text-center text-white">Create a store</h4>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
