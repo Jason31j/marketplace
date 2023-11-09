@@ -1,8 +1,7 @@
-from django.db import models
-from django.core.exceptions import ValidationError
-from django.utils.text import slugify
-
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.db import models
+
 from products.models import Product
 
 
@@ -18,6 +17,8 @@ def validate_rating(value):
     """
     if value < 0 or value > 5:
         raise ValidationError('The rating must be between 0 and 5')
+
+
 class Review(models.Model):
     class Meta:
         unique_together = ('product', 'author')

@@ -1,10 +1,13 @@
-from django.utils.text import slugify
+from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from django.db import models
+from django.contrib.auth.models import User
+from django.utils.text import slugify
+
 from stores.models import Store
 
 # Create your models here.
+
 class Category(models.Model):
     name = models.CharField(max_length=20) 
     description = models.TextField()
@@ -48,3 +51,14 @@ class Product(models.Model):
 def pre_save_slug(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = slugify(instance.name)
+
+
+class Wishlist(models.Model):
+    class Meta:
+        unique_together = ('user', 'product')
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username + ' - ' + self.product.name

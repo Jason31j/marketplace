@@ -1,8 +1,8 @@
-from django.views import generic
-from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import IntegrityError
+from django.urls import reverse
+from django.views import generic
 
 from .models import Review
 from .forms import ReviewForm
@@ -22,6 +22,7 @@ class ReviewListView(generic.ListView):
     def get_queryset(self):
         return Review.objects.filter(product=self.kwargs['id_product'])
 
+
 class ReviewCreateView(LoginRequiredMixin ,generic.CreateView):
     model = Review
     template_name = 'review_create.html'
@@ -36,17 +37,18 @@ class ReviewCreateView(LoginRequiredMixin ,generic.CreateView):
             messages.error(self.request, 'You have already reviewed this product')
             return super().form_invalid(form)
 
-
     def form_invalid(self, form):
         return super().form_invalid(form)
 
     def get_success_url(self):
         return reverse('reviews:review_list', kwargs={'id_product': self.kwargs['id_product']})
 
+
 class ReviewDetailView(generic.DetailView):
     model = Review
     template_name = 'review_detail.html'
     context_object_name = 'review'
+
 
 class ReviewUpdateView(generic.UpdateView):
     model = Review
@@ -59,6 +61,7 @@ class ReviewUpdateView(generic.UpdateView):
 
     def get_success_url(self):
         return reverse('reviews:review_list', kwargs={'id_product': self.object.product.id})
+
 
 class ReviewDeleteView(generic.DeleteView):
     model = Review

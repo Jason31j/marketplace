@@ -1,9 +1,8 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import generic
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.utils.text import slugify
 
 from .models import Product, Category
 from .forms import categoryForm, productForm
@@ -11,8 +10,8 @@ from .forms import categoryForm, productForm
 
 # --------------------product views------------------------
 
+#coming soon
 def productSearchPage(request):
-    """Comming soon"""
     template_name = 'product_search.html'
     context_object_name = 'products'
     if request.method == 'POST':
@@ -21,6 +20,8 @@ def productSearchPage(request):
         return render(request, template_name, {context_object_name: products})
     else:
         return redirect('/products/')
+
+
 class productListPage(generic.ListView):
     template_name = 'product/product_list.html'
     context_object_name = 'products'
@@ -31,10 +32,12 @@ class productListPage(generic.ListView):
         else:
             return Product.objects.all()
 
+
 class productDetailPage(generic.DetailView):
     template_name = 'product/product_detail.html'
     context_object_name = 'product'
     queryset = Product.objects.all()
+
 
 class productCreatePage(generic.CreateView):
     template_name = 'product/product_create.html'
@@ -52,6 +55,7 @@ class productCreatePage(generic.CreateView):
     def get_success_url(self):
         return reverse('products:product_list', kwargs={'category': self.object.category.slug})
 
+
 class productUpdatePage(generic.UpdateView):
     template_name = 'product/product_update.html'
     model = Product
@@ -59,7 +63,7 @@ class productUpdatePage(generic.UpdateView):
 
     def get_success_url(self):
         return reverse('products:product_list', kwargs={'category': self.object.category.slug})
-    
+
     def form_valid(self, form):
         messages.success(self.request, 'Product updated successfully.')
         return super().form_valid(form)
@@ -67,6 +71,7 @@ class productUpdatePage(generic.UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, 'Product update failed.')
         return super().form_invalid(form)
+
 
 class productDeletePage(generic.DeleteView):
     template_name = 'product/product_delete.html'
@@ -76,7 +81,7 @@ class productDeletePage(generic.DeleteView):
     def form_valid(self, form):
         messages.success(self.request, 'Product deleted successfully.')
         return super().form_valid(form)
-    
+
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, 'Product deleted successfully.')
         return super().delete(request, *args, **kwargs)
@@ -84,7 +89,9 @@ class productDeletePage(generic.DeleteView):
     def get_success_url(self):
         return reverse('products:product_list', kwargs={'category': self.object.category.slug})
 
+
 # --------------------category views----------------------
+
 class categoryListPage(generic.ListView):
     template_name = 'category/category_list.html'
     context_object_name = 'categories'
@@ -95,11 +102,13 @@ class categoryListPage(generic.ListView):
         context['user'] = self.request.user
         return context
 
-#not used by now
+
+# not used by now
 class categoryDetailPage(generic.DetailView):
     template_name = 'category/category_detail.html'
     context_object_name = 'category'
     queryset = Category.objects.all()
+
 
 class categoryCreatePage(generic.CreateView):
     template_name = 'category/category_create.html'
@@ -117,6 +126,7 @@ class categoryCreatePage(generic.CreateView):
     def get_success_url(self):
         return reverse('products:category_list')
 
+
 class categoryUpdatePage(generic.UpdateView):
     template_name = 'category/category_update.html'
     model = Category
@@ -133,6 +143,7 @@ class categoryUpdatePage(generic.UpdateView):
     def get_success_url(self):
         return reverse('products:category_list')
 
+
 class categoryDeletePage(generic.DeleteView):
     template_name = 'category/category_delete.html'
     model = Category
@@ -144,3 +155,41 @@ class categoryDeletePage(generic.DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, 'Category deleted successfully.')
         return super().delete(request, *args, **kwargs)
+
+
+# -------------------- wishlist views ------------------------
+
+class wishlistListPage(LoginRequiredMixin, generic.ListView):
+    template_name = 'wishlist/wishlist.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        return self.request.user.wishlist.all()
+
+
+class wishlistAddPage(LoginRequiredMixin, generic.RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse('products:product_detail', kwargs={'slug': self.kwargs.get('slug')})
+
+    def get(self, request, *args, **kwargs):
+        product = Product.objects.get(slug=self.kwargs.get('slug'))
+        if product in request.user.wishlist.all():
+            messages.error(request, 'Product already in wishlist.')
+        else:
+            request.user.wishlist.add(product)
+            messages.success(request, 'Product added to wishlist.')
+        return super().get(request, *args, **kwargs)
+
+
+class wishlistRemovePage(LoginRequiredMixin, generic.RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse('products:product_detail', kwargs={'slug': self.kwargs.get('slug')})
+
+    def get(self, request, *args, **kwargs):
+        product = Product.objects.get(slug=self.kwargs.get('slug'))
+        if product in request.user.wishlist.all():
+            request.user.wishlist.remove(product)
+            messages.success(request, 'Product removed from wishlist.')
+        else:
+            messages.error(request, 'Product not in wishlist.')
+        return super().get(request, *args, **kwargs)

@@ -1,20 +1,24 @@
-# Create your views here.
 from django.contrib import messages
-from django.views import generic
-from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
+from django.views import generic
 
 from .models import Store
 from .forms import StoreForm
+
+# Create your views here.
+
 class storeListPage(generic.ListView):
     template_name = 'store/store_list.html'
     context_object_name = 'stores'
     queryset = Store.objects.all()
 
+
 class storeDetailPage(generic.DetailView):
     template_name = 'store/store_detail.html'
     context_object_name = 'store'
     queryset = Store.objects.all()
+
 
 class storeCreatePage(LoginRequiredMixin, generic.CreateView):
     template_name = 'store/store_create.html'
@@ -33,6 +37,7 @@ class storeCreatePage(LoginRequiredMixin, generic.CreateView):
     def get_success_url(self):
         return reverse('stores:store_list')
 
+
 class storeUpdatePage(generic.UpdateView):
     template_name = 'store/store_update.html'
     model = Store
@@ -49,6 +54,7 @@ class storeUpdatePage(generic.UpdateView):
     def get_success_url(self):
         return reverse('stores:store_list')
 
+
 class storeDeletePage(generic.DeleteView):
     template_name = 'store/store_delete.html'
     model = Store
@@ -61,6 +67,7 @@ class storeDeletePage(generic.DeleteView):
     def get_success_url(self):
         return reverse('stores:store_list')
 
+
 class myStorePage(LoginRequiredMixin ,generic.TemplateView):
     template_name = 'store/my_store.html'
 
@@ -69,6 +76,7 @@ class myStorePage(LoginRequiredMixin ,generic.TemplateView):
         # Agrega objetos filtrados al contexto
         context['store'] = Store.objects.filter(user=self.request.user)
         return context
+
 
 #comming soon
 class storeSearchPage(generic.ListView):

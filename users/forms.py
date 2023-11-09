@@ -12,6 +12,7 @@ class CreateUserForm(UserCreationForm):
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
+
 class LoginForm(AuthenticationForm):
     class Meta:
         model = User
