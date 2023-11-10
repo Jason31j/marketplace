@@ -30,7 +30,7 @@
                         <p class="card-text">{{ category.description }}</p>
                         
                     </div>
-                    {% if user.is_superuser %}
+                    {% if user.is_staff %}
                     <div class="d-grid gap-2">
                         <a href="{% url 'products:category_update' slug=category.slug %}" class="btn btn-primary text-center">Edit</a>
                         <a href="{% url 'products:category_delete' slug=category.slug %}" class="btn btn-danger text-center">Delete</a>
