@@ -1,8 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.views import generic
 
-from .forms import CreateUserForm, LoginForm
+from .forms import CreateUserForm, LoginForm, ProfileForm
+from .models import UserProfile
 
 # Create your views here.
 
@@ -17,6 +20,7 @@ def registerPage(request):
                 form.save()
                 user = form.cleaned_data.get('username')
                 messages.success(request, 'Account was created for ' + user)
+                
                 return redirect('users:login')
             else:
                 messages.error(request, 'Error creating account')
@@ -52,6 +56,24 @@ def logoutUser(request):
     return redirect('users:login')
 
 
-def profile(request):
-    profile = request.user
-    return render(request, 'profile.html', {'profile': profile})
+class profileView(generic.TemplateView):
+    template_name = 'profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context['profile'] = UserProfile.objects.get(user=user)
+        return context
+
+
+#fix problem with update view...Generic detail view profileUpdateView must be called with either an object pk or a slug in the URLconf.
+class profileUpdateView(generic.UpdateView):
+    model = UserProfile
+    form_class = ProfileForm
+    template_name = 'profile_update.html'
+
+    def get_object(self):
+        return UserProfile.objects.get(user=self.request.user)
+
+    def get_success_url(self):
+        return reverse('users:profile')

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile Update{% endblock %}
+
+{% block content %}
+<div class="container card p-5">
+    <h1>Update Profile</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="m-3">
+            <label for="bio">Bio:</label>
+            {{ form.bio }}
+        </div>
+        <div class="m-3">
+            <label for="email">Email:</label>
+            {{ form.email }}
+        </div>
+        <div class="m-3">
+            <label for="avatar">Avatar:</label>
+            {{ form.avatar }}
+        </div>
+        <div class="text-center mt-5">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
