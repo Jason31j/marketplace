@@ -5,6 +5,11 @@ from products import views
 app_name = 'products'
 
 urlpatterns = [
+    #wishlist urls
+    path('wishlist/', views.wishlistListPage.as_view(), name='wishlist_list'),
+    path('wishlist/add/<slug:slug>/', views.wishlistAddPage.as_view(), name='wishlist_add'),
+    path('wishlist/remove/<int:wishlist_item>/', views.wishlistRemovePage.as_view(), name='wishlist_remove'),
+
     #category urls
     path('category/', views.categoryListPage.as_view(), name='category_list'),
     path('category/create/', views.categoryCreatePage.as_view(), name='category_create'),

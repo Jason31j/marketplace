@@ -4,8 +4,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import generic
 
-from .models import Product, Category
 from .forms import categoryForm, productForm
+from .models import Product, Category, Wishlist
 
 
 # --------------------product views------------------------
@@ -160,36 +160,42 @@ class categoryDeletePage(generic.DeleteView):
 # -------------------- wishlist views ------------------------
 
 class wishlistListPage(LoginRequiredMixin, generic.ListView):
-    template_name = 'wishlist/wishlist.html'
+    template_name = 'wishlist/wishlist_list.html'
     context_object_name = 'products'
 
     def get_queryset(self):
-        return self.request.user.wishlist.all()
+        return self.request.user.wishlist_set.all()
 
 
 class wishlistAddPage(LoginRequiredMixin, generic.RedirectView):
     def get_redirect_url(self, *args, **kwargs):
-        return reverse('products:product_detail', kwargs={'slug': self.kwargs.get('slug')})
+        return reverse('products:product_detail', kwargs={'slug': self.kwargs.get('slug'), 'category': self.kwargs.get('category')})
 
     def get(self, request, *args, **kwargs):
         product = Product.objects.get(slug=self.kwargs.get('slug'))
-        if product in request.user.wishlist.all():
+        #wishlist = Wishlist.objects.find(user=self.request.user)
+        wishlist = self.request.user.wishlist_set.all()
+
+        if product in wishlist:
             messages.error(request, 'Product already in wishlist.')
         else:
-            request.user.wishlist.add(product)
+            wishlist_item = {'product': product, 'user': self.request.user}
+            Wishlist.objects.create(**wishlist_item)
             messages.success(request, 'Product added to wishlist.')
         return super().get(request, *args, **kwargs)
 
 
-class wishlistRemovePage(LoginRequiredMixin, generic.RedirectView):
-    def get_redirect_url(self, *args, **kwargs):
-        return reverse('products:product_detail', kwargs={'slug': self.kwargs.get('slug')})
+class wishlistRemovePage(generic.DeleteView):
+    template_name = 'wishlist/wishlist_delete.html'
+    model = Wishlist
+    context_object_name = 'product'
 
-    def get(self, request, *args, **kwargs):
-        product = Product.objects.get(slug=self.kwargs.get('slug'))
-        if product in request.user.wishlist.all():
-            request.user.wishlist.remove(product)
-            messages.success(request, 'Product removed from wishlist.')
-        else:
-            messages.error(request, 'Product not in wishlist.')
-        return super().get(request, *args, **kwargs)
+    def get_object(self):
+        return Wishlist.objects.get(id=self.kwargs['wishlist_item'])
+
+    def get_success_url(self):
+        return reverse('products:wishlist_list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Product removed from wishlist.')
+        return super().form_valid(form)

@@ -6,7 +6,7 @@
 <div class="container">
     <h1 class="text-center">Categories</h1>
     <!-- create new category section -->
-    {% if user.is_superuser %}
+    {% if user.is_staff %}
     <div class="row">
         <div class="col-md-12 p-1 mx-auto">
             <a href="{% url 'products:category_create' %}">
@@ -15,7 +15,6 @@
                 </div>
             </a>
         </div>
-        
     </div>
     {% endif %}
     <!-- create new category section -->

@@ -25,11 +25,11 @@
                 <!-- review content section -->
 
                 <!-- buttons section -->
-                {% if user.id == review.author.id %}
+                {% if request.user.id == review.author.id %}
                 <div class="d-flex justify-content-around">
-                    <a href="{% url 'reviews:review_update' id_review=review.id %}" class="btn btn-sm btn-primary"> <img
+                    <a href="{% url 'reviews:review_store_update' id_review=review.id %}" class="btn btn-sm btn-primary"> <img
                             src="{% static 'images/edit.svg' %}" /> Edit</a>
-                    <a href="{% url 'reviews:review_delete' id_review=review.id %}" class="btn btn-sm btn-danger"> <img
+                    <a href="{% url 'reviews:review_store_delete' id_review=review.id %}" class="btn btn-sm btn-danger"> <img
                             src="{% static 'images/delete.svg' %}" /> Delete</a>
                 </div>
                 <!-- buttons section -->

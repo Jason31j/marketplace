@@ -3,11 +3,73 @@
 {% block title %}Store Detail{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <p>test</p>
-        <h1>{{ store.name }}</h1>
-        <p>{{ store.user.username }}</p>
-        <p>{{ store.description }}</p>
-        <p>{{ store.rating }}</p>
-    </div>
+<div class="container">
+    <section class="card col-md-12 mb-5 pb-4">
+
+        {% if store.image %}
+        <img class="card-img-top" src="{{ store.image.url }}" alt="store">
+        {% else %}
+        <img class="card-img-top" src="{% static 'images/store_placeholder.png' %}" alt="Card image cap">
+        {% endif %}
+
+        <div class="card-body">
+            <h4 class="card-title text-center">{{ store.name }}</h4>
+            <p class="card-text">{{ store.description }}</p>
+            <p class="card-text">{{ store.rating }} <img src="{% static 'images/star.svg' %}"></p>
+            <h6 class="card-subtitle text-muted mb-2 text-left">By {{ store.user.username }} - {{ store.user.email }}
+            </h6>
+        </div>
+
+        {% if store.user == request.user %}
+        <div class="m-3 text-center">
+            <a class="btn btn-primary mx-2" href="{% url 'stores:store_update' slug=store.slug %}">Edit</a>
+            <a class="btn btn-danger mx-2" href="{% url 'stores:store_delete' slug=store.slug %}">Delete</a>
+        </div>
+        {% endif %}
+
+        <a href="{% url 'reviews:review_store_list' id_store=store.id %}" class="btn btn-primary mx-5 my-1">See reviews</a>
+        <a href="{% url 'reviews:review_store_create' id_store=store.id %}" class="btn btn-primary mx-5 my-1">Leave a review</a>
+
+    </section>
+
+    <section>
+        <h4 class="text-center m-3">Products we offer</h4>
+        <div class="row">
+            {% for product in store.product_set.all %}
+            <div class="col-md-6 mx-auto">
+                <a href="{% url 'products:product_detail' slug=product.slug category=product.category %}">
+                    <div class="card mb-3 mx-auto">
+                        <div class="row g-0">
+                            <div class="d-flex justify-content-center align-items-center">
+                                {% if product.image %}
+                                <img src="{{ product.image.url }}" class="image-fluid rounded-start"
+                                    style="max-height: 300px;">
+                                {% endif %}
+                            </div>
+                            <div class="">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">{{ product.name }}</h5>
+                                    <p class="card-text">{{ product.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if store.user == request.user %}
+                        <div class="m-3 text-center">
+                            <a class="btn btn-primary mx-2"
+                                href="{% url 'products:product_update' slug=product.slug %}">Edit</a>
+                            <a class="btn btn-danger mx-2"
+                                href="{% url 'products:product_delete' slug=product.slug %}">Delete</a>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+
+</div>
 {% endblock %}

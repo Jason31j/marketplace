@@ -33,3 +33,19 @@ class Review(models.Model):
 
     def __str__(self):
         return self.tittle
+
+
+class StoreReview(models.Model):
+    class Meta:
+        unique_together = ('store', 'author')
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    tittle = models.CharField(max_length=50)
+    description = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    store = models.ForeignKey('stores.Store', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='reviews/', blank=True, null=True)
+    rating = models.IntegerField(validators=[validate_rating])
+
+    def __str__(self):
+        return self.tittle

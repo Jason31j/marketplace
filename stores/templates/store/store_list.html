@@ -12,9 +12,9 @@
             <a href="{% url 'stores:store_detail' slug=store.slug %}">
                 <div class="card m-2 text-center">
                     {% if store.image %}
-                    <img class="card-img-top" src="{{ store.image.url }}" alt="Card image cap">
+                    <img class="card-img-top" src="{{ store.image.url }}" alt="Card image cap" style="height: 200px;">
                     {% else %}
-                    <img class="card-img-top" src="{% static 'images/store_placeholder.png' %}" alt="Card image cap">
+                    <img class="card-img-top" src="{% static 'images/store_placeholder.png' %}" alt="Card image cap" style="height: 200px;">
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-tittle text-center">{{ store.name }}</h5>
@@ -22,10 +22,13 @@
                         <p class="text-center">{{ store.rating }} <img src="{% static 'images/star.svg' %}" alt=""></p>
                     </div>
 
+                    {% if store.user == request.user %}
                     <div class="text-center p-4">
                         <a href="{% url 'stores:store_update' slug=store.slug %}" class="btn btn-primary mx-2">Edit</a>
                         <a href="{% url 'stores:store_delete' slug=store.slug %}" class="btn btn-danger mx-2">Delete</a>
                     </div>
+                    {% endif %}
+                    
                 </div>
             </a>
         </div>
