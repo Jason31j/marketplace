@@ -173,10 +173,10 @@ class wishlistAddPage(LoginRequiredMixin, generic.RedirectView):
 
     def get(self, request, *args, **kwargs):
         product = Product.objects.get(slug=self.kwargs.get('slug'))
-        #wishlist = Wishlist.objects.find(user=self.request.user)
         wishlist = self.request.user.wishlist_set.all()
 
-        if product in wishlist:
+        # validate if product is already in wishlist
+        if wishlist.filter(product=product).exists():
             messages.error(request, 'Product already in wishlist.')
         else:
             wishlist_item = {'product': product, 'user': self.request.user}
