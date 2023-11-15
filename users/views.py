@@ -1,5 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import generic
@@ -56,7 +58,7 @@ def logoutUser(request):
     return redirect('users:login')
 
 
-class profileView(generic.TemplateView):
+class profileView(LoginRequiredMixin ,generic.TemplateView):
     template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
@@ -66,14 +68,32 @@ class profileView(generic.TemplateView):
         return context
 
 
-#fix problem with update view...Generic detail view profileUpdateView must be called with either an object pk or a slug in the URLconf.
-class profileUpdateView(generic.UpdateView):
+class profileUpdateView(LoginRequiredMixin ,generic.UpdateView):
     model = UserProfile
     form_class = ProfileForm
     template_name = 'profile_update.html'
 
     def get_object(self):
         return UserProfile.objects.get(user=self.request.user)
+    
+    def form_valid(self, form):
+        # Update user email
+        new_email = form.cleaned_data['email']
+        user = self.request.user
+        user.email = new_email
+        user.save()
+
+        # Update user profile
+        form.save()
+
+        messages.success(self.request, 'Profile updated successfully')
+        return redirect('users:profile')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        # Set email placeholder
+        form.fields['email'].initial = self.request.user.email
+        return form
 
     def get_success_url(self):
         return reverse('users:profile')

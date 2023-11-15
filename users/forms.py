@@ -1,8 +1,9 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import (AuthenticationForm, UserChangeForm, UserCreationForm)
 from django.contrib.auth.models import User
 
 from .models import UserProfile
+
 
 class CreateUserForm(UserCreationForm):
     class Meta:
@@ -25,10 +26,13 @@ class LoginForm(AuthenticationForm):
 
 
 class ProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ['avatar', 'email', 'bio', ]
+    biography = forms.CharField(max_length=500, required=False)
+    avatar = forms.ImageField(required=False)
+
+    class Meta(UserChangeForm.Meta):
+        model = User
+        fields = ('avatar', 'email', 'bio')
 
     bio = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    avatar = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}))
+    avatar = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), required=False)
