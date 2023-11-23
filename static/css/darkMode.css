@@ -17,23 +17,28 @@ body.dark-mode .slider:before {
     color: #fff;
 }
 
-nav,
-div,
-section,
-footer,
-header,
-aside,
-main,
-article,
-figure {
-    background: inherit;
-    color: inherit;
-}
-
-/* Estilos específicos para .card en modo oscuro */
 body.dark-mode .card {
     background-color: #444;
     color: #fff;
+}
+
+body.dark-mode nav {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark-mode footer {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark-mode .card-header {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark-mode ul.dropdown-menu {
+    background-color: #333;
 }
 
 .loading {

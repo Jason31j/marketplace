@@ -1,6 +1,6 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom mb-2">
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom mb-2 nav-pallette">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'main:home' %}">Chambeadores's Shop</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -27,11 +27,6 @@
                     </ul>
                 </li>
             </ul>
-
-            <!-- <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form> -->
 
             <ul>
                 <li class="nav-item">
@@ -83,12 +78,6 @@
                 </li>
             </ul>
 
-            <!-- <label class="switch">
-                <input type="checkbox" id="darkModeToggle" class="">
-                <span class="slider round"></span>
-            </label> -->
-
-
             <!-- dark mode siwtch -->
             <ul>
                 <li class="nav-item dropdown">
@@ -100,22 +89,22 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
                         <li>
-                            <button type="button" id="light-theme" class="dropdown-item d-flex align-items-center">
+                            <a type="button" id="light-theme" class="dropdown-item d-flex align-items-center">
                                 <img class="mx-2" src="{% static 'images/sun.svg' %}" alt="">
                                 Light
                                 <svg class="bi ms-auto d-none">
                                     <use href="#check2"></use>
                                 </svg>
-                            </button>
+                            </a>
                         </li>
                         <li>
-                            <button type="button" id="dark-theme" class="dropdown-item d-flex align-items-center">
+                            <a type="button" id="dark-theme" class="dropdown-item d-flex align-items-center">
                                 <img class="mx-2" src="{% static 'images/moon.svg' %}">
                                 Dark
                                 <svg class="bi ms-auto d-none">
                                     <use href="#check2"></use>
                                 </svg>
-                            </button>
+                            </a>
                         </li>
                     </ul>
                 </li>
