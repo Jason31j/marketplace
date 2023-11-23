@@ -34,14 +34,6 @@ figure {
 body.dark-mode .card {
     background-color: #444;
     color: #fff;
-    border: 1px solid #666;
-}
-
-.card {
-    /* Estilos generales para .card en modo claro */
-    background-color: #fff;
-    color: #333;
-    border: 1px solid #ccc;
 }
 
 .loading {
