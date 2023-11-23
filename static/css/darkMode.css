@@ -1,0 +1,49 @@
+/* Dark Mode styles */
+body.dark-mode {
+    background-color: #333;
+    color: #fff;
+}
+
+body.dark-mode .slider {
+    background-color: #888;
+}
+
+body.dark-mode .slider:before {
+    background-color: #111;
+}
+
+.card.dark-mode {
+    background-color: #555;
+    color: #fff;
+}
+
+nav,
+div,
+section,
+footer,
+header,
+aside,
+main,
+article,
+figure {
+    background: inherit;
+    color: inherit;
+}
+
+/* Estilos específicos para .card en modo oscuro */
+body.dark-mode .card {
+    background-color: #444;
+    color: #fff;
+    border: 1px solid #666;
+}
+
+.card {
+    /* Estilos generales para .card en modo claro */
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.loading {
+    visibility: hidden;
+}
