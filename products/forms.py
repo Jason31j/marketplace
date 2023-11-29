@@ -5,7 +5,7 @@ from .models import Product, Category
 class productForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ['name', 'stock', 'description', 'price', 'image', 'category']
     
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     stock = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control', 'min': 0, 'step': 1}), required=False)

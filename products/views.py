@@ -39,14 +39,20 @@ class productDetailPage(generic.DetailView):
     queryset = Product.objects.all()
 
 
-class productCreatePage(generic.CreateView):
+class productCreatePage(LoginRequiredMixin ,generic.CreateView):
     template_name = 'product/product_create.html'
     model = Product
     form_class = productForm
 
     def form_valid(self, form):
-        messages.success(self.request, 'Product created successfully.')
-        return super().form_valid(form)
+        form.instance.store = self.request.user.store
+        print(form.instance.store)
+        try:
+            messages.success(self.request, 'Product created successfully.')
+            return super().form_valid(form)
+        except:
+            messages.error(self.request, 'You have to create a store first.')
+            return super().form_invalid(form)
 
     def form_invalid(self, form):
         messages.error(self.request, 'Product creation failed.')
