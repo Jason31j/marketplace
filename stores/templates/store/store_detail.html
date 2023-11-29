@@ -27,13 +27,29 @@
         </div>
         {% endif %}
 
-        <a href="{% url 'reviews:review_store_list' id_store=store.id %}" class="btn btn-primary mx-5 my-1">See reviews</a>
-        <a href="{% url 'reviews:review_store_create' id_store=store.id %}" class="btn btn-primary mx-5 my-1">Leave a review</a>
+        <a href="{% url 'reviews:review_store_list' id_store=store.id %}" class="btn btn-primary mx-5 my-1">See
+            reviews</a>
+        <a href="{% url 'reviews:review_store_create' id_store=store.id %}" class="btn btn-primary mx-5 my-1">Leave a
+            review</a>
 
     </section>
 
     <section>
         <h4 class="text-center m-3">Products we offer</h4>
+
+        {% if store.user == request.user %}
+
+        <!-- create new product section -->
+        <a href="{% url 'products:product_create' %}">
+            <div class="card mb-3 mx-auto p-5 bg-primary" style="max-width: 900px;">
+                <div class="row g-0">
+                    <h4 class="text-center text-white">Create a new product</h4>
+                </div>
+            </div>
+        </a>
+        <!-- create new product section -->
+        {% endif %}
+
         <div class="row">
             {% for product in store.product_set.all %}
             <div class="col-md-6 mx-auto">
