@@ -45,9 +45,8 @@ class productCreatePage(LoginRequiredMixin ,generic.CreateView):
     form_class = productForm
 
     def form_valid(self, form):
-        form.instance.store = self.request.user.store
-        print(form.instance.store)
         try:
+            form.instance.store = self.request.user.store
             messages.success(self.request, 'Product created successfully.')
             return super().form_valid(form)
         except:
