@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -28,6 +29,19 @@ def pre_save_slug(sender, instance, *args, **kwargs):
         instance.slug = slugify(instance.name)
 
 
+def validate_rating(value):
+    """
+    Validates that the rating is between 0 and 5.
+
+    Args:
+        value (int): The rating value to validate.
+
+    Raises:
+        ValidationError: If the rating is not between 0 and 5.
+    """
+    if value < 0 or value > 5:
+        raise ValidationError('The rating must be between 0 and 5')
+
 class Product(models.Model):
     name = models.CharField(max_length=120)
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
@@ -37,6 +51,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     slug = models.SlugField(max_length=120, blank=True, null=True)
+    rating = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True, default=0.0, validators=[validate_rating])
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -62,3 +77,6 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return self.user.username + ' - ' + self.product.name
+    
+
+

@@ -32,16 +32,37 @@
 
     <!-- featured -->
     <div class="container my-4">
-        <div class="card w-100 my-3 p-3 text-center">
-            <div class="card-header ">
+        <div class="card w-100 my-3 text-center">
+            <div class="card-header nav-pallette">
                 <h4 class="card-tittle">Featured Products</h5>
             </div>
             <div class="card-body">
                 <h5 class="card-title">Special products we recommend</h5>
-                <p class="card-text"></p>
-                <a href="#" class="nav-link">Producto 1</a>
-                <a href="#" class="nav-link">Producto 2</a>
-                <a href="#" class="nav-link">Producto 3</a>
+
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-md-6 p-1 mx-auto">
+                        <a href="{% url 'products:product_detail' slug=product.slug category=product.category %}">
+                            <div class="card p-3 m-2">
+                                <div class="row g-0">
+
+                                    <div class="card-body col-md-5">
+                                        {% if product.image %}
+                                        <img src="{{ product.image.url }}" class="image-fluid rounded-start"
+                                            style="max-height: 300px;">
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="card-body col-md-7">
+                                        <h5 class="card-title text-center">{{ product.name }}</h5>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
